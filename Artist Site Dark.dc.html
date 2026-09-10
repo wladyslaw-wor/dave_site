@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b0a09;color:#f4f1ea;font-family:'JetBrains Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased}
+a{color:#f4f1ea;text-decoration:none}
+a:hover{color:#e2703a}
+input,textarea,button{font:inherit;color:#f4f1ea;border-radius:0}
+::selection{background:#e2703a;color:#0b0a09}
+::placeholder{color:rgba(244,241,234,.28)}
+@keyframes drift{0%{transform:scale(1.06)}50%{transform:scale(1.12) translate3d(-1.5%,-1%,0)}100%{transform:scale(1.06)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+</style>
+</helmet>
+
+<div style="--accent:{{ accent }};--fh:{{ headFont }};--vpos:{{ visPos }};--vflex:{{ visFlex }};--vmin:{{ visMin }};--colmax:{{ colMax }};--colmar:{{ colMargin }};--ov:{{ overlay }};--bgimg:{{ bgCss }};min-height:100vh;display:flex;flex-wrap:wrap;position:relative">
+
+  <div style="position:var(--vpos,fixed);inset:0;flex:var(--vflex,none);min-height:var(--vmin,0);overflow:hidden;background:#131110">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(112deg,#1a1614 0 16px,#131110 16px 32px)"></div>
+    <div style="position:absolute;left:clamp(16px,2vw,28px);bottom:clamp(16px,2vw,28px);max-width:230px">
+      <span style="display:block;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.28);line-height:2">video loop<br>1920 × 1080 · mp4 / webm<br>add it in the admin panel</span>
+    </div>
+    <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ false }}">
+      <video src="{{ videoUrl }}" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+    </sc-if>
+    <div style="position:absolute;inset:0;background-image:var(--bgimg,none);background-size:cover;background-position:center;animation:drift 30s ease-in-out infinite"></div>
+    <div style="position:absolute;inset:0;background:rgba(11,10,9,var(--ov,.5))"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,9,.62) 0%,rgba(11,10,9,.1) 40%,rgba(11,10,9,.78) 100%)"></div>
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(244,241,234,.022) 0 1px,transparent 1px 3px);pointer-events:none"></div>
+  </div>
+
+  <div style="flex:1 1 380px;max-width:var(--colmax,560px);margin:var(--colmar,0 auto);position:relative;z-index:2;width:100%;padding:clamp(30px,6vh,72px) clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:clamp(22px,3vh,34px);justify-content:center;min-height:100vh">
+
+    <div style="display:flex;flex-direction:column;gap:15px;animation:rise .55s ease both">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="flex:0 0 54px;height:54px;border-radius:50%;overflow:hidden;border:1px solid rgba(244,241,234,.2);background:repeating-linear-gradient(45deg,rgba(244,241,234,.12) 0 5px,rgba(244,241,234,.04) 5px 10px);position:relative">
+          <div style="position:absolute;inset:0;background-image:{{ avatarCss }};background-size:cover;background-position:center"></div>
+        </div>
+        <span style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent,#e2703a)">{{ kicker }}</span>
+      </div>
+      <h1 style="margin:0;font-family:var(--fh,Syne),sans-serif;font-weight:800;font-size:clamp(42px,8vw,80px);line-height:.92;letter-spacing:-.035em;text-wrap:balance">{{ name }}</h1>
+      <p style="margin:0;max-width:44ch;font-size:13px;line-height:1.8;color:rgba(244,241,234,.72);text-wrap:pretty">{{ bio }}</p>
+    </div>
+
+    <a href="{{ releaseUrl }}" target="_blank" rel="noreferrer" data-id="release" onClick="{{ trackClick }}" style="display:flex;align-items:center;gap:15px;padding:14px;border:1px solid var(--accent,#e2703a);background:rgba(226,112,58,.1);transition:background .25s ease,color .25s ease" style-hover="background:var(--accent,#e2703a);color:#0b0a09">
+      <span style="flex:0 0 60px;height:60px;position:relative;overflow:hidden;background:repeating-linear-gradient(45deg,rgba(244,241,234,.14) 0 6px,rgba(244,241,234,.05) 6px 12px);display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:.1em;opacity:.75">
+        <span style="position:absolute;inset:0;background-image:{{ coverCss }};background-size:cover;background-position:center"></span>
+        COVER
+      </span>
+      <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.7">{{ releaseKicker }}</span>
+        <span style="font-family:var(--fh,Syne),sans-serif;font-weight:700;font-size:19px;letter-spacing:-.01em">{{ releaseTitle }}</span>
+      </span>
+      <span style="font-size:15px;animation:pulse 2.6s ease-in-out infinite">▶</span>
+    </a>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <sc-for list="{{ links }}" as="l" hint-placeholder-count="7">
+        <a href="{{ l.url }}" target="_blank" rel="noreferrer" data-id="{{ l.id }}" onClick="{{ trackClick }}" style="display:flex;align-items:center;gap:14px;padding:15px 17px;border:1px solid rgba(244,241,234,.15);background:rgba(20,17,16,.55);backdrop-filter:blur(6px);transition:background .22s ease,transform .22s ease,border-color .22s ease,color .22s ease" style-hover="background:var(--accent,#e2703a);border-color:var(--accent,#e2703a);color:#0b0a09;transform:translateX(5px)">
+          <span style="flex:0 0 20px;font-size:10px;letter-spacing:.08em;opacity:.45">{{ l.num }}</span>
+          <span style="flex:1;min-width:0;font-family:var(--fh,Syne),sans-serif;font-weight:700;font-size:16px;letter-spacing:-.01em">{{ l.label }}</span>
+          <span style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.55">{{ l.tag }}</span>
+          <span style="font-size:12px;opacity:.5">↗</span>
+        </a>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ showTour }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:6px;padding-top:4px">
+        <span style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,234,.45);padding-bottom:6px">Live dates</span>
+        <sc-for list="{{ dates }}" as="d" hint-placeholder-count="3">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid rgba(244,241,234,.1)">
+            <span style="flex:0 0 62px;font-size:11px;letter-spacing:.04em;color:var(--accent,#e2703a)">{{ d.date }}</span>
+            <span style="flex:1 1 90px;min-width:0;font-family:var(--fh,Syne),sans-serif;font-weight:700;font-size:14px">{{ d.city }}</span>
+            <span style="font-size:10px;opacity:.5">{{ d.venue }}</span>
+            <a href="{{ d.url }}" target="_blank" rel="noreferrer" data-id="{{ d.id }}" onClick="{{ trackClick }}" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid rgba(244,241,234,.3);padding-bottom:2px">Tickets</a>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.42)">
+      <span>{{ footer }}</span>
+      <a href="{{ contactUrl }}" style="border-bottom:1px solid rgba(244,241,234,.25);padding-bottom:1px">{{ contactLabel }}</a>
+    </div>
+  </div>
+
+  <button type="button" onClick="{{ toggleAdmin }}" style="position:fixed;right:16px;bottom:16px;z-index:40;background:rgba(20,17,16,.8);backdrop-filter:blur(8px);border:1px solid rgba(244,241,234,.2);color:#f4f1ea;padding:10px 14px;cursor:pointer;font-size:10px;letter-spacing:.16em;text-transform:uppercase" style-hover="border-color:var(--accent,#e2703a);color:var(--accent,#e2703a)">{{ adminBtn }}</button>
+
+  <sc-if value="{{ adminOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;top:0;right:0;bottom:0;z-index:50;width:min(440px,100%);background:#100e0d;border-left:1px solid rgba(244,241,234,.14);box-shadow:-30px 0 60px rgba(0,0,0,.5);display:flex;flex-direction:column;animation:rise .3s ease both">
+
+      <div style="padding:18px 20px;border-bottom:1px solid rgba(244,241,234,.12);display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-family:var(--fh,Syne),sans-serif;font-weight:700;font-size:16px;letter-spacing:-.02em">Site admin</span>
+            <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,234,.4)">{{ savedLabel }}</span>
+          </div>
+          <button type="button" onClick="{{ toggleAdmin }}" style="background:transparent;border:1px solid rgba(244,241,234,.18);width:30px;height:30px;cursor:pointer;font-size:12px" style-hover="border-color:var(--accent,#e2703a)">✕</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+            <button type="button" data-tab="{{ t.id }}" onClick="{{ setTab }}" style="background:{{ t.bg }};border:1px solid {{ t.border }};color:{{ t.color }};padding:8px 11px;cursor:pointer;font-size:10px;letter-spacing:.1em;text-transform:uppercase">{{ t.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:18px">
+
+        <sc-if value="{{ tabContent }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Artist name</span><input value="{{ name }}" data-field="name" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Line above the name</span><input value="{{ kicker }}" data-field="kicker" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Bio</span><textarea rows="3" value="{{ bio }}" data-field="bio" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;line-height:1.7;outline:none;resize:vertical" style-focus="border-color:var(--accent,#e2703a)"></textarea></label>
+            <div style="height:1px;background:rgba(244,241,234,.1)"></div>
+            <span style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#e2703a)">Featured release</span>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Label</span><input value="{{ releaseKicker }}" data-field="releaseKicker" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Title</span><input value="{{ releaseTitle }}" data-field="releaseTitle" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">URL</span><input value="{{ releaseUrl }}" data-field="releaseUrl" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Cover art</span><input type="file" accept="image/*" data-field="cover" onChange="{{ onUpload }}" style="font-size:10.5px;color:rgba(244,241,234,.6)"></label>
+            <div style="height:1px;background:rgba(244,241,234,.1)"></div>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Footer line</span><input value="{{ footer }}" data-field="footer" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Contact label</span><input value="{{ contactLabel }}" data-field="contactLabel" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Contact URL</span><input value="{{ contactUrl }}" data-field="contactUrl" onChange="{{ onField }}" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:12.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)"></label>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ tabLinks }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <button type="button" onClick="{{ addLink }}" style="align-self:flex-start;background:var(--accent,#e2703a);border:none;color:#0b0a09;padding:9px 13px;cursor:pointer;font-size:10px;letter-spacing:.12em;text-transform:uppercase">+ add link</button>
+            <sc-for list="{{ links }}" as="l" hint-placeholder-count="7">
+              <div style="display:flex;flex-direction:column;gap:8px;padding:11px;border:1px solid rgba(244,241,234,.12);background:rgba(244,241,234,.02)">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:10px;opacity:.4">{{ l.num }}</span>
+                  <input value="{{ l.label }}" data-id="{{ l.id }}" data-field="label" onChange="{{ onLinkField }}" placeholder="Label" style="flex:1;min-width:0;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:8px 10px;font-size:12px;outline:none" style-focus="border-color:var(--accent,#e2703a)">
+                  <div style="display:flex;gap:4px">
+                    <button type="button" data-id="{{ l.id }}" data-dir="-1" onClick="{{ moveLink }}" style="background:transparent;border:1px solid rgba(244,241,234,.16);width:28px;height:28px;cursor:pointer;font-size:10px" style-hover="border-color:var(--accent,#e2703a)">↑</button>
+                    <button type="button" data-id="{{ l.id }}" data-dir="1" onClick="{{ moveLink }}" style="background:transparent;border:1px solid rgba(244,241,234,.16);width:28px;height:28px;cursor:pointer;font-size:10px" style-hover="border-color:var(--accent,#e2703a)">↓</button>
+                    <button type="button" data-id="{{ l.id }}" onClick="{{ delLink }}" style="background:transparent;border:1px solid rgba(244,241,234,.16);width:28px;height:28px;cursor:pointer;font-size:10px;color:rgba(244,241,234,.7)" style-hover="border-color:#e2703a;color:#e2703a">✕</button>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <input value="{{ l.url }}" data-id="{{ l.id }}" data-field="url" onChange="{{ onLinkField }}" placeholder="https://" style="flex:2;min-width:0;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:8px 10px;font-size:11.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)">
+                  <input value="{{ l.tag }}" data-id="{{ l.id }}" data-field="tag" onChange="{{ onLinkField }}" placeholder="Tag" style="flex:0 0 92px;min-width:0;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:8px 10px;font-size:11px;outline:none;text-transform:uppercase" style-focus="border-color:var(--accent,#e2703a)">
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ tabVisual }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Visual placement</span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <sc-for list="{{ layouts }}" as="o" hint-placeholder-count="2">
+                  <button type="button" data-layout="{{ o.id }}" onClick="{{ setLayout }}" style="background:{{ o.bg }};border:1px solid {{ o.border }};color:{{ o.color }};padding:9px 13px;cursor:pointer;font-size:10.5px;letter-spacing:.08em">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Background video (mp4 / webm URL)</span>
+              <input value="{{ videoUrl }}" data-field="videoUrl" onChange="{{ onField }}" placeholder="https://…/loop.mp4" style="width:100%;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:10px 12px;font-size:11.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)">
+              <input type="file" accept="video/*" data-field="videoUrl" onChange="{{ onUpload }}" style="font-size:10.5px;color:rgba(244,241,234,.6)">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Still image fallback</span>
+              <input type="file" accept="image/*" data-field="bgUrl" onChange="{{ onUpload }}" style="font-size:10.5px;color:rgba(244,241,234,.6)">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Avatar</span>
+              <input type="file" accept="image/*" data-field="avatarUrl" onChange="{{ onUpload }}" style="font-size:10.5px;color:rgba(244,241,234,.6)">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Overlay darkness · {{ overlayPct }}</span>
+              <input type="range" min="0" max="0.85" step="0.05" value="{{ overlay }}" onChange="{{ onOverlay }}" style="width:100%;accent-color:var(--accent,#e2703a)">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Accent colour</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ palette }}" as="c" hint-placeholder-count="5">
+                  <button type="button" data-color="{{ c.value }}" onClick="{{ setAccent }}" title="{{ c.value }}" style="width:34px;height:34px;padding:0;cursor:pointer;background:{{ c.value }};border:2px solid {{ c.border }}"></button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Display typeface</span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <sc-for list="{{ fonts }}" as="f" hint-placeholder-count="3">
+                  <button type="button" data-font="{{ f.id }}" onClick="{{ setFont }}" style="background:{{ f.bg }};border:1px solid {{ f.border }};color:{{ f.color }};padding:9px 13px;cursor:pointer;font-size:13px;font-family:{{ f.stack }}">{{ f.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ tabTour }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+              <button type="button" onClick="{{ addDate }}" style="background:var(--accent,#e2703a);border:none;color:#0b0a09;padding:9px 13px;cursor:pointer;font-size:10px;letter-spacing:.12em;text-transform:uppercase">+ add date</button>
+              <button type="button" onClick="{{ toggleTour }}" style="background:transparent;border:1px solid rgba(244,241,234,.18);padding:9px 13px;cursor:pointer;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,241,234,.7)" style-hover="border-color:var(--accent,#e2703a)">{{ tourToggleLabel }}</button>
+            </div>
+            <sc-for list="{{ dates }}" as="d" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:8px;padding:11px;border:1px solid rgba(244,241,234,.12);background:rgba(244,241,234,.02)">
+                <div style="display:flex;gap:8px">
+                  <input value="{{ d.date }}" data-id="{{ d.id }}" data-field="date" onChange="{{ onDateField }}" placeholder="12 OCT" style="flex:0 0 82px;min-width:0;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:8px 10px;font-size:11.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)">
+                  <input value="{{ d.city }}" data-id="{{ d.id }}" data-field="city" onChange="{{ onDateField }}" placeholder="City" style="flex:1;min-width:0;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:8px 10px;font-size:11.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)">
+                  <button type="button" data-id="{{ d.id }}" onClick="{{ delDate }}" style="background:transparent;border:1px solid rgba(244,241,234,.16);width:28px;height:28px;cursor:pointer;font-size:10px;color:rgba(244,241,234,.7)" style-hover="border-color:#e2703a;color:#e2703a">✕</button>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <input value="{{ d.venue }}" data-id="{{ d.id }}" data-field="venue" onChange="{{ onDateField }}" placeholder="Venue" style="flex:1;min-width:0;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:8px 10px;font-size:11.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)">
+                  <input value="{{ d.url }}" data-id="{{ d.id }}" data-field="url" onChange="{{ onDateField }}" placeholder="Ticket URL" style="flex:1;min-width:0;background:rgba(244,241,234,.05);border:1px solid rgba(244,241,234,.14);padding:8px 10px;font-size:11.5px;outline:none" style-focus="border-color:var(--accent,#e2703a)">
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ tabStats }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <div style="flex:1 1 120px;padding:13px;border:1px solid rgba(244,241,234,.12);display:flex;flex-direction:column;gap:5px">
+                <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Total clicks</span>
+                <span style="font-family:var(--fh,Syne),sans-serif;font-weight:700;font-size:26px">{{ totalClicks }}</span>
+              </div>
+              <div style="flex:1 1 120px;padding:13px;border:1px solid rgba(244,241,234,.12);display:flex;flex-direction:column;gap:5px">
+                <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Top link</span>
+                <span style="font-family:var(--fh,Syne),sans-serif;font-weight:700;font-size:15px;line-height:1.3">{{ topLink }}</span>
+              </div>
+            </div>
+            <sc-for list="{{ stats }}" as="s" hint-placeholder-count="6">
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;justify-content:space-between;gap:10px;font-size:11px">
+                  <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.label }}</span>
+                  <span style="opacity:.6">{{ s.count }}</span>
+                </div>
+                <div style="height:5px;background:rgba(244,241,234,.08)">
+                  <div style="height:100%;width:{{ s.pct }};background:var(--accent,#e2703a)"></div>
+                </div>
+              </div>
+            </sc-for>
+            <button type="button" onClick="{{ resetStats }}" style="align-self:flex-start;background:transparent;border:1px solid rgba(244,241,234,.18);padding:9px 13px;cursor:pointer;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,241,234,.6)" style-hover="border-color:#e2703a;color:#e2703a">Reset counters</button>
+          </div>
+        </sc-if>
+
+        <div style="margin-top:auto;padding-top:10px;border-top:1px solid rgba(244,241,234,.1);display:flex;gap:8px;flex-wrap:wrap">
+          <button type="button" onClick="{{ exportJson }}" style="background:transparent;border:1px solid rgba(244,241,234,.18);padding:9px 13px;cursor:pointer;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,241,234,.7)" style-hover="border-color:var(--accent,#e2703a)">Export JSON</button>
+          <button type="button" onClick="{{ resetAll }}" style="background:transparent;border:1px solid rgba(244,241,234,.18);padding:9px 13px;cursor:pointer;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,241,234,.5)" style-hover="border-color:#e2703a;color:#e2703a">Reset content</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#e2703a&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#e2703a&quot;,&quot;#d8d2c4&quot;,&quot;#7ea6c9&quot;,&quot;#c95f7a&quot;,&quot;#89a06a&quot;],&quot;section&quot;:&quot;Theme&quot;}}">
+const KEY = 'dd_artist_site_v1';
+
+const DEFAULTS = {
+  name: 'Dave Devine',
+  kicker: 'Artist · Producer',
+  bio: 'Late-night electronic soul recorded in one room. New material every season, tour dates in the list below.',
+  releaseKicker: 'New single · out now',
+  releaseTitle: 'Slow Static',
+  releaseUrl: 'https://open.spotify.com',
+  coverUrl: '',
+  footer: '© 2026 Dave Devine',
+  contactLabel: 'Booking & press',
+  contactUrl: 'mailto:booking@davedevine.com',
+  videoUrl: '',
+  bgUrl: '',
+  avatarUrl: '',
+  overlay: 0.5,
+  accent: '#e2703a',
+  font: 'syne',
+  layout: 'background',
+  showTour: true,
+  links: [
+    { id: 'l1', label: 'Spotify', url: 'https://open.spotify.com', tag: 'Stream' },
+    { id: 'l2', label: 'Apple Music', url: 'https://music.apple.com', tag: 'Stream' },
+    { id: 'l3', label: 'Yandex Music', url: 'https://music.yandex.ru', tag: 'Stream' },
+    { id: 'l4', label: 'YouTube', url: 'https://youtube.com', tag: 'Videos' },
+    { id: 'l5', label: 'Instagram', url: 'https://instagram.com', tag: 'Social' },
+    { id: 'l6', label: 'Tickets', url: 'https://bandsintown.com', tag: 'Live' },
+    { id: 'l7', label: 'Merch store', url: 'https://shop.example.com', tag: 'Shop' },
+    { id: 'l8', label: 'Press kit', url: 'https://drive.google.com', tag: 'Contact' }
+  ],
+  dates: [
+    { id: 'd1', date: '12 OCT', city: 'Berlin', venue: 'Berghain Kantine', url: 'https://tickets.example.com' },
+    { id: 'd2', date: '19 OCT', city: 'Amsterdam', venue: 'Paradiso Noord', url: 'https://tickets.example.com' },
+    { id: 'd3', date: '02 NOV', city: 'London', venue: 'Village Underground', url: 'https://tickets.example.com' }
+  ],
+  clicks: {}
+};
+
+const FONTS = {
+  syne: { label: 'Syne', stack: "Syne, sans-serif" },
+  serif: { label: 'Instrument', stack: "'Instrument Serif', serif" },
+  grotesk: { label: 'Grotesk', stack: "'Space Grotesk', sans-serif" }
+};
+
+const PALETTE = ['#e2703a', '#d8d2c4', '#7ea6c9', '#c95f7a', '#89a06a'];
+
+class Component extends DCLogic {
+  state = { data: DEFAULTS, adminOpen: false, tab: 'content', saved: 'Local draft' };
+
+  componentDidMount() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) this.setState({ data: Object.assign({}, DEFAULTS, JSON.parse(raw)) });
+    } catch (e) {}
+  }
+
+  persist(data) {
+    this.setState({ data: data, saved: 'Saved ' + new Date().toLocaleTimeString() });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  patch(p) { this.persist(Object.assign({}, this.state.data, p)); }
+
+  uid(p) { return p + Math.random().toString(36).slice(2, 7); }
+
+  renderVals() {
+    const d = this.state.data;
+    const accent = d.accent || this.props.accent || '#e2703a';
+    const font = FONTS[d.font] || FONTS.syne;
+    const left = d.layout === 'left';
+    const tabDefs = [
+      ['content', 'Content'], ['links', 'Links'], ['visual', 'Visual'],
+      ['tour', 'Tour'], ['stats', 'Stats']
+    ];
+    const btn = (active) => ({
+      bg: active ? accent : 'transparent',
+      border: active ? accent : 'rgba(244,241,234,.18)',
+      color: active ? '#0b0a09' : 'rgba(244,241,234,.7)'
+    });
+    const counts = d.links.map(l => ({ id: l.id, label: l.label, count: d.clicks[l.id] || 0 }));
+    counts.unshift({ id: 'release', label: d.releaseTitle + ' (featured)', count: d.clicks.release || 0 });
+    const max = Math.max(1, ...counts.map(c => c.count));
+    const total = counts.reduce((a, c) => a + c.count, 0);
+    const top = counts.slice().sort((a, b) => b.count - a.count)[0];
+
+    return {
+      name: d.name, kicker: d.kicker, bio: d.bio,
+      releaseKicker: d.releaseKicker, releaseTitle: d.releaseTitle, releaseUrl: d.releaseUrl,
+      footer: d.footer, contactLabel: d.contactLabel, contactUrl: d.contactUrl,
+      videoUrl: d.videoUrl || undefined,
+      hasVideo: !!d.videoUrl,
+      bgCss: d.bgUrl ? 'url("' + d.bgUrl + '")' : 'none',
+      avatarCss: d.avatarUrl ? 'url("' + d.avatarUrl + '")' : 'none',
+      coverCss: d.coverUrl ? 'url("' + d.coverUrl + '")' : 'none',
+      overlay: d.overlay,
+      overlayPct: Math.round(d.overlay * 100) + '%',
+      accent: accent,
+      headFont: font.stack,
+      showTour: d.showTour,
+      links: d.links.map((l, i) => Object.assign({}, l, { num: String(i + 1).padStart(2, '0') })),
+      dates: d.dates,
+
+      visPos: left ? 'relative' : 'fixed',
+      visFlex: left ? '1 1 clamp(300px,46%,680px)' : 'none',
+      visMin: left ? 'clamp(300px,52vh,100vh)' : '0',
+      colMax: left ? '620px' : '560px',
+      colMargin: left ? '0' : '0 auto',
+
+      adminOpen: this.state.adminOpen,
+      adminBtn: this.state.adminOpen ? 'Close' : 'Admin',
+      savedLabel: this.state.saved,
+      tab: this.state.tab,
+      tabContent: this.state.tab === 'content',
+      tabLinks: this.state.tab === 'links',
+      tabVisual: this.state.tab === 'visual',
+      tabTour: this.state.tab === 'tour',
+      tabStats: this.state.tab === 'stats',
+      tabs: tabDefs.map(t => Object.assign({ id: t[0], label: t[1] }, btn(this.state.tab === t[0]))),
+      layouts: [
+        Object.assign({ id: 'background', label: 'Full background' }, btn(!left)),
+        Object.assign({ id: 'left', label: 'Split · left' }, btn(left))
+      ],
+      palette: PALETTE.map(v => ({ value: v, border: v === accent ? '#f4f1ea' : 'transparent' })),
+      fonts: Object.keys(FONTS).map(k => Object.assign(
+        { id: k, label: FONTS[k].label, stack: FONTS[k].stack }, btn(d.font === k)
+      )),
+      tourToggleLabel: d.showTour ? 'Hide tour block' : 'Show tour block',
+      stats: counts.map(c => ({
+        label: c.label, count: c.count, pct: Math.round((c.count / max) * 100) + '%'
+      })),
+      totalClicks: total,
+      topLink: total ? top.label : '—',
+
+      toggleAdmin: () => this.setState({ adminOpen: !this.state.adminOpen }),
+      setTab: (e) => this.setState({ tab: e.currentTarget.dataset.tab }),
+      onField: (e) => this.patch({ [e.currentTarget.dataset.field]: e.currentTarget.value }),
+      onOverlay: (e) => this.patch({ overlay: parseFloat(e.currentTarget.value) }),
+      setAccent: (e) => this.patch({ accent: e.currentTarget.dataset.color }),
+      setFont: (e) => this.patch({ font: e.currentTarget.dataset.font }),
+      setLayout: (e) => this.patch({ layout: e.currentTarget.dataset.layout }),
+      toggleTour: () => this.patch({ showTour: !d.showTour }),
+      onUpload: (e) => {
+        const field = e.currentTarget.dataset.field;
+        const file = e.currentTarget.files && e.currentTarget.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        this.patch(field === 'cover' ? { coverUrl: url } : { [field]: url });
+      },
+      onLinkField: (e) => {
+        const t = e.currentTarget;
+        this.patch({ links: d.links.map(l => l.id === t.dataset.id ? Object.assign({}, l, { [t.dataset.field]: t.value }) : l) });
+      },
+      addLink: () => this.patch({ links: d.links.concat([{ id: this.uid('l'), label: 'New link', url: 'https://', tag: 'Link' }]) }),
+      delLink: (e) => {
+        const id = e.currentTarget.dataset.id;
+        this.patch({ links: d.links.filter(l => l.id !== id) });
+      },
+      moveLink: (e) => {
+        const t = e.currentTarget;
+        const dir = parseInt(t.dataset.dir, 10);
+        const arr = d.links.slice();
+        const i = arr.findIndex(l => l.id === t.dataset.id);
+        const j = i + dir;
+        if (i < 0 || j < 0 || j >= arr.length) return;
+        const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+        this.patch({ links: arr });
+      },
+      onDateField: (e) => {
+        const t = e.currentTarget;
+        this.patch({ dates: d.dates.map(x => x.id === t.dataset.id ? Object.assign({}, x, { [t.dataset.field]: t.value }) : x) });
+      },
+      addDate: () => this.patch({ dates: d.dates.concat([{ id: this.uid('d'), date: '01 JAN', city: 'City', venue: 'Venue', url: 'https://' }]) }),
+      delDate: (e) => {
+        const id = e.currentTarget.dataset.id;
+        this.patch({ dates: d.dates.filter(x => x.id !== id) });
+      },
+      trackClick: (e) => {
+        const id = e.currentTarget.dataset.id;
+        if (!id) return;
+        const clicks = Object.assign({}, d.clicks);
+        clicks[id] = (clicks[id] || 0) + 1;
+        this.patch({ clicks: clicks });
+      },
+      resetStats: () => this.patch({ clicks: {} }),
+      resetAll: () => this.persist(Object.assign({}, DEFAULTS)),
+      exportJson: () => {
+        const blob = new Blob([JSON.stringify(this.state.data, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'dave-devine-site.json';
+        a.click();
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>

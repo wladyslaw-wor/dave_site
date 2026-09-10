@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Content {
+  id                Int      @id @default(autoincrement())
+  name              String
+  kicker            String
+  bio               String
+  releaseKicker     String
+  releaseTitle      String
+  releaseUrl        String
+  coverUrl          String   @default("")
+  footer            String
+  contactLabel      String
+  contactUrl        String
+  aboutTitle        String
+  aboutText         String
+  aboutPhoto        String   @default("")
+  videoUrl          String   @default("")
+  bgUrl             String   @default("")
+  avatarUrl         String   @default("")
+  overlay           Float    @default(0.62)
+  accent            String   @default("#6d1420")
+  font              String   @default("instrument")
+  layout            String   @default("background")
+  showTour          Boolean  @default(true)
+  googleAnalyticsId String   @default("")
+  yandexMetrikaId   String   @default("")
+  updatedAt         DateTime @updatedAt
+}
+
+model Link {
+  id    String @id @default(cuid())
+  label String
+  url   String
+  tag   String @default("")
+  order Int    @default(0)
+}
+
+model MenuItem {
+  id    String @id @default(cuid())
+  label String
+  url   String
+  order Int    @default(0)
+}
+
+model TourDate {
+  id    String @id @default(cuid())
+  date  String
+  city  String
+  venue String
+  url   String
+  order Int    @default(0)
+}
+
+model Click {
+  id    String @id
+  count Int    @default(0)
+}
+
+model AdminUser {
+  id           String @id @default(cuid())
+  username     String @unique
+  passwordHash String
+}
