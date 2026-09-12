@@ -121,6 +121,7 @@ cd /var/www/davedevine
 git pull origin master
 
 npm ci                     # если менялись зависимости
+npx prisma generate        # обязательно, если менялась prisma/schema.prisma — npm ci выше не всегда перегенерит клиент
 npx prisma migrate deploy  # применит новые миграции, если есть; безопасно гонять всегда
 npm run build
 
