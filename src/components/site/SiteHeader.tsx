@@ -75,7 +75,6 @@ export function SiteHeader({ name, menu }: { name: string; menu: MenuItem[] }) {
               onClick={() => setMenuOpen(false)}
             >
               {item.label}
-              <span className="burger-item-arrow">↗</span>
             </TrackedLink>
           ))}
           <button type="button" className="burger-close" onClick={() => setMenuOpen(false)}>
