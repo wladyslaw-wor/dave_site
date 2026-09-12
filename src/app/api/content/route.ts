@@ -31,17 +31,14 @@ const EDITABLE_FIELDS = [
   "font",
   "layout",
   "showTour",
-  "googleAnalyticsId",
-  "yandexMetrikaId",
+  "googleAnalyticsCode",
+  "yandexMetrikaCode",
   "instagramUrl",
   "tiktokUrl",
   "youtubeUrl",
   "threadsUrl",
   "xUrl",
 ] as const;
-
-const GA_ID_PATTERN = /^G-[A-Z0-9]+$/i;
-const YM_ID_PATTERN = /^\d+$/;
 
 export async function PUT(req: Request) {
   const unauthorized = await requireAdmin();
@@ -51,27 +48,6 @@ export async function PUT(req: Request) {
   const data: Record<string, unknown> = {};
   for (const key of EDITABLE_FIELDS) {
     if (key in body) data[key] = body[key];
-  }
-
-  if (
-    typeof data.googleAnalyticsId === "string" &&
-    data.googleAnalyticsId !== "" &&
-    !GA_ID_PATTERN.test(data.googleAnalyticsId)
-  ) {
-    return NextResponse.json(
-      { error: "Google Analytics ID must look like G-XXXXXXXXXX" },
-      { status: 400 },
-    );
-  }
-  if (
-    typeof data.yandexMetrikaId === "string" &&
-    data.yandexMetrikaId !== "" &&
-    !YM_ID_PATTERN.test(data.yandexMetrikaId)
-  ) {
-    return NextResponse.json(
-      { error: "Yandex Metrika ID must be numeric" },
-      { status: 400 },
-    );
   }
 
   const existing = await getContent();

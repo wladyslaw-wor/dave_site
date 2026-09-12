@@ -109,24 +109,32 @@ export function ContentTab({ content, onPatch }: { content: Content; onPatch: Pa
       <section className="admin-group">
         <h3 className="admin-group-title">Analytics</h3>
         <label className="admin-field">
-          <span className="admin-field-label">Google Analytics (GA4) measurement ID</span>
-          <input
+          <span className="admin-field-label">Google Analytics code</span>
+          <textarea
             className="admin-input"
-            value={content.googleAnalyticsId}
-            onChange={field("googleAnalyticsId")}
-            placeholder="G-XXXXXXXXXX"
+            rows={5}
+            value={content.googleAnalyticsCode}
+            onChange={field("googleAnalyticsCode")}
+            placeholder={'<script async src="https://www.googletagmanager.com/gtag/js?id=..."></script>\n<script>...</script>'}
           />
-          <span className="admin-field-hint">Leave empty to disable. Format: G-XXXXXXXXXX.</span>
+          <span className="admin-field-hint">
+            Paste the full snippet from Google Analytics (Admin → Data Streams → your stream).
+            Leave empty to disable.
+          </span>
         </label>
         <label className="admin-field">
-          <span className="admin-field-label">Yandex Metrika counter ID</span>
-          <input
+          <span className="admin-field-label">Yandex Metrika code</span>
+          <textarea
             className="admin-input"
-            value={content.yandexMetrikaId}
-            onChange={field("yandexMetrikaId")}
-            placeholder="12345678"
+            rows={5}
+            value={content.yandexMetrikaCode}
+            onChange={field("yandexMetrikaCode")}
+            placeholder={'<script>...</script>\n<noscript>...</noscript>'}
           />
-          <span className="admin-field-hint">Leave empty to disable. Numbers only.</span>
+          <span className="admin-field-hint">
+            Paste the full counter code from Yandex Metrika (Settings → Counter code).
+            Leave empty to disable.
+          </span>
         </label>
       </section>
     </div>

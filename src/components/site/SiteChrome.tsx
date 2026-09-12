@@ -35,8 +35,8 @@ export function SiteChrome({
   return (
     <div className="site-shell" style={shellStyle}>
       <Analytics
-        googleAnalyticsId={content.googleAnalyticsId}
-        yandexMetrikaId={content.yandexMetrikaId}
+        googleAnalyticsCode={content.googleAnalyticsCode}
+        yandexMetrikaCode={content.yandexMetrikaCode}
       />
       <BackgroundVisual
         videoUrl={content.videoUrl}
