@@ -23,6 +23,11 @@ export const DEFAULT_CONTENT = {
   showTour: true,
   googleAnalyticsId: "",
   yandexMetrikaId: "",
+  instagramUrl: "",
+  tiktokUrl: "",
+  youtubeUrl: "",
+  threadsUrl: "",
+  xUrl: "",
 } as const;
 
 export const DEFAULT_LINKS = [

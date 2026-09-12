@@ -33,6 +33,11 @@ const EDITABLE_FIELDS = [
   "showTour",
   "googleAnalyticsId",
   "yandexMetrikaId",
+  "instagramUrl",
+  "tiktokUrl",
+  "youtubeUrl",
+  "threadsUrl",
+  "xUrl",
 ] as const;
 
 const GA_ID_PATTERN = /^G-[A-Z0-9]+$/i;

@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, rm, writeFile } from "fs/promises";
 import path from "path";
 
 const UPLOADS_ROOT = path.resolve(
@@ -59,4 +59,15 @@ export async function saveUpload(file: File, category: UploadCategory): Promise<
 
 export function uploadsRoot() {
   return UPLOADS_ROOT;
+}
+
+export async function clearUploads() {
+  await Promise.all(
+    UPLOAD_CATEGORIES.map((category) =>
+      rm(path.join(/* turbopackIgnore: true */ UPLOADS_ROOT, category), {
+        recursive: true,
+        force: true,
+      }),
+    ),
+  );
 }

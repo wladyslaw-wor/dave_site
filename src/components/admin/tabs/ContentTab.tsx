@@ -82,6 +82,31 @@ export function ContentTab({ content, onPatch }: { content: Content; onPatch: Pa
       </section>
 
       <section className="admin-group">
+        <h3 className="admin-group-title">Social links</h3>
+        <label className="admin-field">
+          <span className="admin-field-label">Instagram URL</span>
+          <input className="admin-input" value={content.instagramUrl} onChange={field("instagramUrl")} placeholder="https://instagram.com/..." />
+        </label>
+        <label className="admin-field">
+          <span className="admin-field-label">TikTok URL</span>
+          <input className="admin-input" value={content.tiktokUrl} onChange={field("tiktokUrl")} placeholder="https://tiktok.com/@..." />
+        </label>
+        <label className="admin-field">
+          <span className="admin-field-label">YouTube URL</span>
+          <input className="admin-input" value={content.youtubeUrl} onChange={field("youtubeUrl")} placeholder="https://youtube.com/@..." />
+        </label>
+        <label className="admin-field">
+          <span className="admin-field-label">Threads URL</span>
+          <input className="admin-input" value={content.threadsUrl} onChange={field("threadsUrl")} placeholder="https://threads.net/@..." />
+        </label>
+        <label className="admin-field">
+          <span className="admin-field-label">X (Twitter) URL</span>
+          <input className="admin-input" value={content.xUrl} onChange={field("xUrl")} placeholder="https://x.com/..." />
+        </label>
+        <span className="admin-field-hint">Leave empty to hide an icon.</span>
+      </section>
+
+      <section className="admin-group">
         <h3 className="admin-group-title">Analytics</h3>
         <label className="admin-field">
           <span className="admin-field-label">Google Analytics (GA4) measurement ID</span>

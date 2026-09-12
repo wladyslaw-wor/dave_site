@@ -5,6 +5,7 @@ import { HeroHeader } from "@/components/site/HeroHeader";
 import { ReleaseCard } from "@/components/site/ReleaseCard";
 import { LinkList } from "@/components/site/LinkList";
 import { TourDates } from "@/components/site/TourDates";
+import { SocialLinks } from "@/components/site/SocialLinks";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,6 +45,7 @@ export default async function LinksPage() {
       <ReleaseCard content={content} />
       <LinkList links={links} />
       {content.showTour ? <TourDates dates={dates} /> : null}
+      <SocialLinks content={content} />
       <SiteFooter content={content} />
     </SiteChrome>
   );

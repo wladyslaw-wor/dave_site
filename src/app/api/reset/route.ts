@@ -9,6 +9,7 @@ import {
   DEFAULT_DATES,
 } from "@/lib/defaults";
 import { getContent } from "@/lib/content";
+import { clearUploads } from "@/lib/upload";
 
 export async function POST() {
   const unauthorized = await requireAdmin();
@@ -29,6 +30,8 @@ export async function POST() {
     prisma.menuItem.createMany({ data: DEFAULT_MENU }),
     prisma.tourDate.createMany({ data: DEFAULT_DATES }),
   ]);
+
+  await clearUploads();
 
   revalidatePath("/");
   revalidatePath("/about");

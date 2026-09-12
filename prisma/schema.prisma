@@ -32,6 +32,11 @@ model Content {
   showTour          Boolean  @default(true)
   googleAnalyticsId String   @default("")
   yandexMetrikaId   String   @default("")
+  instagramUrl      String   @default("")
+  tiktokUrl         String   @default("")
+  youtubeUrl        String   @default("")
+  threadsUrl        String   @default("")
+  xUrl              String   @default("")
   updatedAt         DateTime @updatedAt
 }
 

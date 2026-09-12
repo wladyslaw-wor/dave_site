@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScrolled } from "./ScrollProvider";
 import { TrackedLink } from "./TrackedLink";
 import type { MenuItem } from "@/types";
@@ -12,11 +12,33 @@ export function SiteHeader({ name, menu }: { name: string; menu: MenuItem[] }) {
   const scrolled = useScrolled();
   const pathname = usePathname();
   const isAbout = pathname === "/about";
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      const target = e.target as Node;
+      if (sheetRef.current?.contains(target)) return;
+      if (burgerRef.current?.contains(target)) return;
+      setMenuOpen(false);
+    };
+    const handleScroll = () => setMenuOpen(false);
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [menuOpen]);
 
   return (
     <>
       <header className="site-header">
         <button
+          ref={burgerRef}
           type="button"
           className="burger-btn"
           aria-label="Menu"
@@ -41,7 +63,7 @@ export function SiteHeader({ name, menu }: { name: string; menu: MenuItem[] }) {
       </header>
 
       {menuOpen ? (
-        <div className="burger-sheet">
+        <div className="burger-sheet" ref={sheetRef}>
           {menu.map((item) => (
             <TrackedLink
               key={item.id}
