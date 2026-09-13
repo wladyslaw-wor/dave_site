@@ -72,11 +72,11 @@ export function ContentTab({ content, onPatch }: { content: Content; onPatch: Pa
           <input className="admin-input" value={content.footer} onChange={field("footer")} />
         </label>
         <label className="admin-field">
-          <span className="admin-field-label">Contact label</span>
+          <span className="admin-field-label">Powered by</span>
           <input className="admin-input" value={content.contactLabel} onChange={field("contactLabel")} />
         </label>
         <label className="admin-field">
-          <span className="admin-field-label">Contact URL</span>
+          <span className="admin-field-label">Agency URL</span>
           <input className="admin-input" value={content.contactUrl} onChange={field("contactUrl")} />
         </label>
       </section>
