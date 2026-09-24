@@ -33,6 +33,7 @@ model Content {
   googleAnalyticsCode String @default("")
   yandexMetrikaCode   String @default("")
   instagramUrl      String   @default("")
+  telegramUrl       String   @default("")
   tiktokUrl         String   @default("")
   youtubeUrl        String   @default("")
   threadsUrl        String   @default("")

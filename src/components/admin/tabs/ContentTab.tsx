@@ -103,6 +103,10 @@ export function ContentTab({ content, onPatch }: { content: Content; onPatch: Pa
           <span className="admin-field-label">X (Twitter) URL</span>
           <input className="admin-input" value={content.xUrl} onChange={field("xUrl")} placeholder="https://x.com/..." />
         </label>
+        <label className="admin-field">
+          <span className="admin-field-label">Telegram URL</span>
+          <input className="admin-input" value={content.telegramUrl} onChange={field("telegramUrl")} placeholder="https://t.me/..." />
+        </label>
         <span className="admin-field-hint">Leave empty to hide an icon.</span>
       </section>
 

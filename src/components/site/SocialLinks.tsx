@@ -1,6 +1,11 @@
 import type { Content } from "@/types";
 
 const ICONS: Record<string, React.ReactNode> = {
+  telegram: (
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21.7 3.3a1 1 0 0 0-1.1-.2L2.8 10a.9.9 0 0 0 .1 1.7l4.6 1.5 1.8 5.6a.8.8 0 0 0 1.3.3l2.7-2.5 4.5 3.3a1 1 0 0 0 1.6-.6L22 4.3a1 1 0 0 0-.3-1ZM9 12.6l9.5-6-7.4 7.3-.7 3.5L9 12.6Z" />
+    </svg>
+  ),
   instagram: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
       <rect x="3" y="3" width="18" height="18" rx="5" />
@@ -38,6 +43,7 @@ const NETWORKS: { key: keyof typeof ICONS; field: keyof Content; label: string }
   { key: "youtube", field: "youtubeUrl", label: "YouTube" },
   { key: "threads", field: "threadsUrl", label: "Threads" },
   { key: "x", field: "xUrl", label: "X" },
+  { key: "telegram", field: "telegramUrl", label: "Telegram" },
 ];
 
 export function SocialLinks({ content }: { content: Content }) {

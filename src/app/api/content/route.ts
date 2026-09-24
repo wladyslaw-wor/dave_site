@@ -34,6 +34,7 @@ const EDITABLE_FIELDS = [
   "googleAnalyticsCode",
   "yandexMetrikaCode",
   "instagramUrl",
+  "telegramUrl",
   "tiktokUrl",
   "youtubeUrl",
   "threadsUrl",

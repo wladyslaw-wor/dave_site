@@ -24,6 +24,7 @@ export const DEFAULT_CONTENT = {
   googleAnalyticsCode: "",
   yandexMetrikaCode: "",
   instagramUrl: "",
+  telegramUrl: "",
   tiktokUrl: "",
   youtubeUrl: "",
   threadsUrl: "",

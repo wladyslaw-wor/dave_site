@@ -3,6 +3,8 @@ import { getContent, getLinks, getMenu } from "@/lib/content";
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { AboutIntro } from "@/components/site/AboutIntro";
 import { LinkList } from "@/components/site/LinkList";
+import { SocialLinks } from "@/components/site/SocialLinks";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getContent();
@@ -37,6 +39,8 @@ export default async function AboutPage() {
     <SiteChrome content={content} menu={menu}>
       <AboutIntro content={content} />
       <LinkList links={links} variant="compact" />
+      <SocialLinks content={content} />
+      <SiteFooter content={content} />
     </SiteChrome>
   );
 }

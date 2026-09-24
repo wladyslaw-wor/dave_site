@@ -1,0 +1,1 @@
+ALTER TABLE "Content" ADD COLUMN "telegramUrl" TEXT NOT NULL DEFAULT '';
