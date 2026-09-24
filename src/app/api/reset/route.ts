@@ -24,6 +24,8 @@ export async function POST() {
     prisma.tourDate.deleteMany({}),
     prisma.click.deleteMany({}),
     prisma.album.deleteMany({}),
+    prisma.blog.deleteMany({}),
+    prisma.mediaArchive.deleteMany({}),
   ]);
 
   await prisma.$transaction([
@@ -37,6 +39,8 @@ export async function POST() {
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/album");
+  revalidatePath("/blog");
+  revalidatePath("/archive");
 
   return NextResponse.json({ ok: true });
 }

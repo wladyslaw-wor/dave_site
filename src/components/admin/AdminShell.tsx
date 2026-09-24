@@ -8,10 +8,14 @@ import { VisualTab } from "./tabs/VisualTab";
 import { TourTab } from "./tabs/TourTab";
 import { StatsTab } from "./tabs/StatsTab";
 import { AlbumTab } from "./tabs/AlbumTab";
+import { BlogTab } from "./tabs/BlogTab";
+import { ArchiveTab } from "./tabs/ArchiveTab";
 
 const TABS = [
   { id: "content", label: "Content" },
   { id: "album", label: "The Album" },
+  { id: "blog", label: "Blog" },
+  { id: "archive", label: "Archive" },
   { id: "links", label: "Links" },
   { id: "visual", label: "Visual" },
   { id: "tour", label: "Tour" },
@@ -150,7 +154,7 @@ export function AdminShell({
   }, []);
 
   const resetAll = useCallback(async () => {
-    if (!window.confirm("Reset all content, album, links, menu, dates and click counters to defaults?")) {
+    if (!window.confirm("Reset all content, album, blog, archive, links, menu, dates and click counters to defaults?")) {
       return;
     }
     setBusy(true);
@@ -209,6 +213,12 @@ export function AdminShell({
       </nav>
 
       <main className="admin-body">
+        <div hidden={tab !== "blog"}>
+          <BlogTab initialBlog={initialState.blog} />
+        </div>
+        <div hidden={tab !== "archive"}>
+          <ArchiveTab initialArchive={initialState.archive} />
+        </div>
         <div hidden={tab !== "album"}>
           <AlbumTab initialAlbum={initialState.album} />
         </div>

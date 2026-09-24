@@ -1,5 +1,29 @@
 # Handoff: Artist link-in-bio site + content admin (Dave Devine)
 
+## Blog and archive (production app)
+
+`/blog` and `/archive` are public pages with no automatic header or burger-menu entries.
+Add their URLs manually in **Admin → Links → Burger menu** when ready.
+
+In **Admin → Blog**, create posts, set their date, and insert text, photo, or video blocks
+in any order. **Insert link** replaces selected text (or inserts at the cursor); the editor
+shows `[text](https://...)`, and the public page renders a link opening in a new tab.
+Use **Preview post** to see the result. Enable **Published**, then **Save blog** to publish;
+unchecked posts remain private drafts. Reorder or remove posts and blocks with the controls.
+
+In **Admin → Archive**, add photos and videos by upload or URL, enter captions, arrange
+their order, then **Save archive**. Photos support JPG, PNG, WebP and GIF (15 MB maximum).
+Videos support MP4, WebM and MOV (200 MB maximum; playback depends on browser/codec).
+YouTube URLs embed a player; direct video file URLs use a native player; other video URLs
+open the source in a new tab. Image links must point to the image itself.
+
+Both editors retain unsaved changes when switching admin tabs and warn before leaving.
+Each page supports up to 100 entries; each blog post supports up to 100 blocks.
+Export JSON includes both pages. Reset content clears both pages and their uploads.
+Deploy with `npm run db:deploy` and `npx prisma generate` before `npm run build`,
+then restart the app. The migration adds Blog and MediaArchive tables without changing
+existing content.
+
 ## Album page (production app)
 
 `/album` is available from **The Album** in the header. In `/admin` → **The Album**, edit

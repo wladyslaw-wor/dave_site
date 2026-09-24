@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { DEFAULT_CONTENT } from "@/lib/defaults";
 import { getAlbum } from "@/lib/album-content";
+import { getBlog, getArchive } from "@/lib/editor-data";
 
 export async function getContent() {
   const content = await prisma.content.findFirst({ orderBy: { id: "asc" } });
@@ -36,13 +37,15 @@ export async function getSiteData() {
 }
 
 export async function getFullState() {
-  const [content, links, menu, dates, clicks, album] = await Promise.all([
+  const [content, links, menu, dates, clicks, album, blog, archive] = await Promise.all([
     getContent(),
     getLinks(),
     getMenu(),
     getDates(),
     getClicksMap(),
     getAlbum(),
+    getBlog(),
+    getArchive(),
   ]);
-  return { content, links, menu, dates, clicks, album };
+  return { content, links, menu, dates, clicks, album, blog, archive };
 }

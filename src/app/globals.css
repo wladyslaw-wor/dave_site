@@ -1306,3 +1306,75 @@ textarea.admin-input {
 .not-found-link:hover {
   color: #17150f;
 }
+
+/* ---------- Blog, archive and content editors ---------- */
+
+.blog-post,
+.blog-blocks,
+.blog-post-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.blog-post + .blog-post {
+  padding-top: 36px;
+  border-top: 1px solid rgba(23, 21, 15, 0.16);
+}
+
+.blog-post-heading { gap: 10px; }
+.blog-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.blog-text a { color: var(--accent, #6d1420); text-underline-offset: 3px; }
+
+.editorial-media { margin: 0; min-width: 0; }
+.editorial-media img,
+.editorial-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 75vh;
+  object-fit: contain;
+}
+.editorial-media video { background: #17150f; }
+.editorial-media iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #17150f;
+}
+.editorial-media figcaption {
+  margin-top: 10px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(23, 21, 15, 0.72);
+  overflow-wrap: anywhere;
+}
+.editorial-video-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  min-height: 120px;
+  padding: 20px;
+  border: 1px solid rgba(23, 21, 15, 0.2);
+  color: inherit;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.archive-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 18px; align-items: start; }
+.archive-grid > :only-child { grid-column: 1 / -1; }
+.editor-block-group,
+.editor-link-form { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.editor-insert { padding: 4px 0; flex-wrap: wrap; }
+.editor-publish { display: flex; align-items: center; gap: 10px; font-size: 12px; min-height: 36px; }
+.editor-post-preview { padding: 20px; background: #f2efe9; color: #17150f; overflow-wrap: anywhere; }
+.editor-media-preview summary { cursor: pointer; font-size: 12px; padding: 10px 0; }
+.editor-media-preview .editorial-media { max-width: 420px; }
+
+@media (max-width: 540px) {
+  .archive-grid { grid-template-columns: minmax(0, 1fr); }
+  .album-editor-card .admin-group-header { flex-wrap: wrap; gap: 10px; }
+  .editor-post-preview { padding: 12px; }
+}

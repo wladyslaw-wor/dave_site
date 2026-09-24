@@ -57,6 +57,8 @@ export async function PUT(req: Request) {
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/album");
+  revalidatePath("/blog");
+  revalidatePath("/archive");
 
   return NextResponse.json(updated);
 }

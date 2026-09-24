@@ -7,7 +7,7 @@ const UPLOADS_ROOT = path.resolve(
   process.env.UPLOADS_DIR ?? "./uploads",
 );
 
-export type UploadCategory = "video" | "bg" | "avatar" | "cover" | "press" | "album";
+export type UploadCategory = "video" | "bg" | "avatar" | "cover" | "press" | "album" | "blog" | "archive";
 
 const KIND_BY_CATEGORY: Record<UploadCategory, "video" | "image"> = {
   video: "video",
@@ -16,6 +16,8 @@ const KIND_BY_CATEGORY: Record<UploadCategory, "video" | "image"> = {
   cover: "image",
   press: "image",
   album: "image",
+  blog: "image",
+  archive: "image",
 };
 
 const ALLOWED_TYPES: Record<"video" | "image", Record<string, string>> = {
@@ -37,7 +39,7 @@ const MAX_SIZE: Record<"video" | "image", number> = {
   image: 15 * 1024 * 1024,
 };
 
-export const UPLOAD_CATEGORIES: UploadCategory[] = ["video", "bg", "avatar", "cover", "press", "album"];
+export const UPLOAD_CATEGORIES: UploadCategory[] = ["video", "bg", "avatar", "cover", "press", "album", "blog", "archive"];
 
 export async function saveUpload(file: File, category: UploadCategory): Promise<string> {
   const kind = KIND_BY_CATEGORY[category];

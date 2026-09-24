@@ -26,6 +26,8 @@ export async function POST(req: Request) {
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/album");
+  revalidatePath("/blog");
+  revalidatePath("/archive");
 
   return NextResponse.json(item, { status: 201 });
 }

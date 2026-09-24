@@ -19,6 +19,8 @@ export type SiteData = {
 
 export type FullState = SiteData & {
   album: import("@/lib/album").AlbumData;
+  blog: import("@/lib/editor-content").BlogData;
+  archive: import("@/lib/editor-content").ArchiveData;
   clicks: Record<string, number>;
 };
 
