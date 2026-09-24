@@ -40,6 +40,17 @@ model Content {
   updatedAt         DateTime @updatedAt
 }
 
+model Album {
+  id        Int      @id @default(1)
+  title     String   @default("")
+  coverUrl  String   @default("")
+  text      String   @default("")
+  singles   Json     @default("[]")
+  platforms Json     @default("[]")
+  videos    Json     @default("[]")
+  photos    Json     @default("[]")
+}
+
 model Link {
   id    String @id @default(cuid())
   label String

@@ -20,6 +20,7 @@ export async function PATCH(req: Request, { params }: Params) {
 
   revalidatePath("/");
   revalidatePath("/about");
+  revalidatePath("/album");
 
   return NextResponse.json(item);
 }
@@ -33,6 +34,7 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   revalidatePath("/");
   revalidatePath("/about");
+  revalidatePath("/album");
 
   return NextResponse.json({ ok: true });
 }

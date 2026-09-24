@@ -18,8 +18,8 @@ export type SiteData = {
 };
 
 export type FullState = SiteData & {
+  album: import("@/lib/album").AlbumData;
   clicks: Record<string, number>;
 };
 
 export type ContentPatch = Partial<Omit<Content, "id" | "updatedAt">>;
-

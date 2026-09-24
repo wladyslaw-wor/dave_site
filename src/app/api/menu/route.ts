@@ -25,6 +25,7 @@ export async function POST(req: Request) {
 
   revalidatePath("/");
   revalidatePath("/about");
+  revalidatePath("/album");
 
   return NextResponse.json(item, { status: 201 });
 }

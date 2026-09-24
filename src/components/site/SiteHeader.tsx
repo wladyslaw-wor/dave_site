@@ -11,7 +11,6 @@ export function SiteHeader({ name, menu }: { name: string; menu: MenuItem[] }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const scrolled = useScrolled();
   const pathname = usePathname();
-  const isAbout = pathname === "/about";
   const sheetRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
 
@@ -53,11 +52,14 @@ export function SiteHeader({ name, menu }: { name: string; menu: MenuItem[] }) {
         <span className={`header-name${scrolled ? " is-visible" : ""}`}>{name}</span>
 
         <nav className="header-nav">
-          <Link href="/" className={`nav-btn${!isAbout ? " is-active" : ""}`}>
-            Links
+          <Link href="/" className={`nav-btn${pathname === "/" ? " is-active" : ""}`} aria-current={pathname === "/" ? "page" : undefined}>
+            Now
           </Link>
-          <Link href="/about" className={`nav-btn${isAbout ? " is-active" : ""}`}>
+          <Link href="/about" className={`nav-btn${pathname === "/about" ? " is-active" : ""}`} aria-current={pathname === "/about" ? "page" : undefined}>
             About
+          </Link>
+          <Link href="/album" className={`nav-btn${pathname === "/album" ? " is-active" : ""}`} aria-current={pathname === "/album" ? "page" : undefined}>
+            The Album
           </Link>
         </nav>
       </header>

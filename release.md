@@ -85,10 +85,39 @@ Systemd не подхватывает shell-профиль (nvm подключа
    ```
 
 5. Настроить reverse proxy в nginx (по образцу конфигов соседних сайтов,
-   `/etc/nginx/sites-available/`):
+   `/etc/nginx/sites-available/`). `davedivine.com` — канонический хост (без www),
+   его отдает приложение; `www.davedivine.com` и HTTP всегда 301 на канонический
+   HTTPS-адрес с сохранением пути и параметров (`$request_uri`), чтобы хосты не
+   индексировались как дубли:
    ```nginx
+   # HTTP (любой хост) → канонический HTTPS
    server {
+       listen 80;
+       listen [::]:80;
        server_name davedivine.com www.davedivine.com;
+       return 301 https://davedivine.com$request_uri;
+   }
+
+   # www по HTTPS → канонический хост без www
+   server {
+       listen 443 ssl;
+       listen [::]:443 ssl;
+       server_name www.davedivine.com;
+
+       ssl_certificate /etc/letsencrypt/live/davedivine.com/fullchain.pem;
+       ssl_certificate_key /etc/letsencrypt/live/davedivine.com/privkey.pem;
+
+       return 301 https://davedivine.com$request_uri;
+   }
+
+   # Канонический хост — отдает приложение
+   server {
+       listen 443 ssl;
+       listen [::]:443 ssl;
+       server_name davedivine.com;
+
+       ssl_certificate /etc/letsencrypt/live/davedivine.com/fullchain.pem;
+       ssl_certificate_key /etc/letsencrypt/live/davedivine.com/privkey.pem;
 
        client_max_body_size 220M;  # видео до 200MB (см. src/lib/upload.ts) + запас
 
@@ -106,9 +135,13 @@ Systemd не подхватывает shell-профиль (nvm подключа
    ```
    ```bash
    sudo ln -s /etc/nginx/sites-available/davedivine.com /etc/nginx/sites-enabled/
-   sudo nginx -t && sudo systemctl reload nginx
    sudo certbot --nginx -d davedivine.com -d www.davedivine.com
+   sudo nginx -t && sudo systemctl reload nginx
    ```
+   Сертификат от `certbot` покрывает оба хоста, поэтому один и тот же путь к
+   нему используется в обоих `server` блоках с `ssl_certificate*`. Если nginx
+   уже настроен со старым единым блоком на оба хоста — заменить его этой
+   конфигурацией и перезагрузить nginx (`nginx -t` перед `reload` обязателен).
 
 6. Убедиться, что DNS-запись домена `davedivine.com` указывает на IP этого сервера.
 

@@ -3,6 +3,7 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 declare global {
   var __prisma: PrismaClient | undefined;
+  var __prismaConstructor: typeof PrismaClient | undefined;
 }
 
 function createClient() {
@@ -12,8 +13,19 @@ function createClient() {
   return new PrismaClient({ adapter });
 }
 
-export const prisma = globalThis.__prisma ?? createClient();
+// HMR preserves globals even after `prisma generate` changes the client schema.
+// Regeneration reloads the constructor; ordinary page edits keep it unchanged.
+const cachedClient = globalThis.__prisma;
+export const prisma = cachedClient && globalThis.__prismaConstructor === PrismaClient
+  ? cachedClient
+  : createClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalThis.__prisma = prisma;
+  globalThis.__prismaConstructor = PrismaClient;
+  if (cachedClient && cachedClient !== prisma) {
+    void cachedClient.$disconnect().catch((error) => {
+      console.error("Could not close the outdated Prisma client", error);
+    });
+  }
 }

@@ -55,6 +55,7 @@ export async function PUT(req: Request) {
 
   revalidatePath("/");
   revalidatePath("/about");
+  revalidatePath("/album");
 
   return NextResponse.json(updated);
 }

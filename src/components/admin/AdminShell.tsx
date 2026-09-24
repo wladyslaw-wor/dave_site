@@ -7,9 +7,11 @@ import { LinksTab } from "./tabs/LinksTab";
 import { VisualTab } from "./tabs/VisualTab";
 import { TourTab } from "./tabs/TourTab";
 import { StatsTab } from "./tabs/StatsTab";
+import { AlbumTab } from "./tabs/AlbumTab";
 
 const TABS = [
   { id: "content", label: "Content" },
+  { id: "album", label: "The Album" },
   { id: "links", label: "Links" },
   { id: "visual", label: "Visual" },
   { id: "tour", label: "Tour" },
@@ -148,7 +150,7 @@ export function AdminShell({
   }, []);
 
   const resetAll = useCallback(async () => {
-    if (!window.confirm("Reset all content, links, menu, dates and click counters to defaults?")) {
+    if (!window.confirm("Reset all content, album, links, menu, dates and click counters to defaults?")) {
       return;
     }
     setBusy(true);
@@ -207,6 +209,9 @@ export function AdminShell({
       </nav>
 
       <main className="admin-body">
+        <div hidden={tab !== "album"}>
+          <AlbumTab initialAlbum={initialState.album} />
+        </div>
         {tab === "content" ? (
           <ContentTab content={content} onPatch={patchContent} />
         ) : null}

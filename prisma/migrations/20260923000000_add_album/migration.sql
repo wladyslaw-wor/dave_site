@@ -1,0 +1,9 @@
+CREATE TABLE "Album" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT DEFAULT 1,
+    "title" TEXT NOT NULL DEFAULT '',
+    "text" TEXT NOT NULL DEFAULT '',
+    "singles" JSONB NOT NULL DEFAULT '[]',
+    "platforms" JSONB NOT NULL DEFAULT '[]',
+    "videos" JSONB NOT NULL DEFAULT '[]',
+    "photos" JSONB NOT NULL DEFAULT '[]'
+);

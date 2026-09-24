@@ -23,6 +23,7 @@ export async function POST() {
     prisma.menuItem.deleteMany({}),
     prisma.tourDate.deleteMany({}),
     prisma.click.deleteMany({}),
+    prisma.album.deleteMany({}),
   ]);
 
   await prisma.$transaction([
@@ -35,6 +36,7 @@ export async function POST() {
 
   revalidatePath("/");
   revalidatePath("/about");
+  revalidatePath("/album");
 
   return NextResponse.json({ ok: true });
 }

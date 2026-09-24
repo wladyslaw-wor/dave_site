@@ -1,5 +1,21 @@
 # Handoff: Artist link-in-bio site + content admin (Dave Devine)
 
+## Album page (production app)
+
+`/album` is available from **The Album** in the header. In `/admin` → **The Album**, edit
+the title, cover and text, add/reorder/remove singles, album platform links, YouTube videos and
+gallery photos, then click **Save album**. Singles can have optional listening links.
+Photos support uploads or URLs, with captions used as image descriptions. YouTube watch,
+share, Shorts, live and embed URLs become responsive iframe players. Empty sections are hidden.
+Album changes persist in SQLite and are included in Export JSON and Reset content.
+The optional cover appears below the title as a square up to 420 px wide, matching the About
+photo. Upload an image or paste its URL; use Remove cover to hide it. Singles appear below
+About the album.
+
+When deploying this feature, run `npm run db:deploy` and `npx prisma generate` before
+`npm run build`, then restart the app. The migration adds a separate Album table and preserves
+existing site content. The remaining documentation below describes the original design reference.
+
 ## Overview
 A single-artist "link in bio" website (Linktree-style) with a full-bleed dark video background, a
 centered content column, a second **About** page, and a built-in **admin drawer** that edits every

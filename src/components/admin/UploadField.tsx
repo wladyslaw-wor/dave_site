@@ -10,12 +10,14 @@ export function UploadField({
   label,
   hint,
   onUploaded,
+  onBusyChange,
 }: {
   category: UploadCategory;
   accept: string;
   label: string;
   hint?: string;
   onUploaded: (url: string) => void;
+  onBusyChange?: (busy: boolean) => void;
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +27,7 @@ export function UploadField({
     const file = event.target.files?.[0];
     if (!file) return;
     setBusy(true);
+    onBusyChange?.(true);
     setError(null);
     try {
       const form = new FormData();
@@ -41,6 +44,7 @@ export function UploadField({
       setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setBusy(false);
+      onBusyChange?.(false);
       if (inputRef.current) inputRef.current.value = "";
     }
   }
