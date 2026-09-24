@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Content, ContentPatch, FullState, Link, MenuItem, TourDate } from "@/types";
 import { ContentTab } from "./tabs/ContentTab";
 import { LinksTab } from "./tabs/LinksTab";
@@ -10,6 +10,7 @@ import { StatsTab } from "./tabs/StatsTab";
 import { AlbumTab } from "./tabs/AlbumTab";
 import { BlogTab } from "./tabs/BlogTab";
 import { ArchiveTab } from "./tabs/ArchiveTab";
+import { createAutosaveQueue, type SaveStatus } from "@/lib/autosave-queue";
 
 const TABS = [
   { id: "content", label: "Content" },
@@ -54,6 +55,46 @@ export function AdminShell({
   const [saveLabel, setSaveLabel] = useState("Local draft");
   const [busy, setBusy] = useState(false);
 
+  const [linkSaveStatus, setLinkSaveStatus] = useState<SaveStatus>({ pending: false, error: "" });
+  const [linkActionBusy, setLinkActionBusy] = useState(false);
+  const [linkActionError, setLinkActionError] = useState("");
+  const linkActionInFlight = useRef(false);
+  const [linkSaves] = useState(() => createAutosaveQueue(
+    (url, patch) => api(url, { method: "PATCH", body: JSON.stringify(patch) }),
+    (status) => {
+      setLinkSaveStatus(status);
+      if (!status.pending && !status.error) setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
+    },
+  ));
+
+  useEffect(() => {
+    if (!linkSaveStatus.pending && !linkActionBusy) return;
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [linkSaveStatus.pending, linkActionBusy]);
+
+  const flushLinks = useCallback(() => {
+    void linkSaves.flush().catch(() => {});
+  }, [linkSaves]);
+
+  const runLinkAction = useCallback(async (action: () => Promise<void>) => {
+    if (linkActionInFlight.current) return;
+    linkActionInFlight.current = true;
+    setLinkActionBusy(true);
+    setLinkActionError("");
+    try {
+      await linkSaves.flush();
+      await action();
+      setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
+    } catch (error) {
+      setLinkActionError(error instanceof Error ? error.message : "Could not update links. Please retry.");
+    } finally {
+      linkActionInFlight.current = false;
+      setLinkActionBusy(false);
+    }
+  }, [linkSaves]);
+
   const pendingPatch = useRef<ContentPatch>({});
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -83,52 +124,46 @@ export function AdminShell({
     [flushPatch],
   );
 
-  const addLink = useCallback(async () => {
+  const addLink = useCallback(() => runLinkAction(async () => {
     const link = await api<Link>("/api/links", { method: "POST", body: JSON.stringify({}) });
     setLinks((prev) => [...prev, link]);
-    setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
-  }, []);
+  }), [runLinkAction]);
 
-  const updateLink = useCallback(async (id: string, patch: Partial<Link>) => {
-    setLinks((prev) => prev.map((l) => (l.id === id ? { ...l, ...patch } : l)));
-    const link = await api<Link>(`/api/links/${id}`, { method: "PATCH", body: JSON.stringify(patch) });
-    setLinks((prev) => prev.map((l) => (l.id === id ? link : l)));
-    setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
-  }, []);
+  const updateLink = useCallback((id: string, patch: Partial<Link>) => {
+    setLinks((prev) => prev.map((link) => link.id === id ? { ...link, ...patch } : link));
+    linkSaves.enqueue(`/api/links/${id}`, patch);
+  }, [linkSaves]);
 
-  const deleteLink = useCallback(async (id: string) => {
-    setLinks((prev) => prev.filter((l) => l.id !== id));
+  const deleteLink = useCallback((id: string) => runLinkAction(async () => {
     await api(`/api/links/${id}`, { method: "DELETE" });
-    setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
-  }, []);
+    setLinks((prev) => prev.filter((link) => link.id !== id));
+  }), [runLinkAction]);
 
-  const moveLink = useCallback(async (id: string, direction: 1 | -1) => {
+  const moveLink = useCallback((id: string, direction: 1 | -1) => runLinkAction(async () => {
     const updated = await api<Link[]>(`/api/links/${id}/move`, {
       method: "POST",
       body: JSON.stringify({ direction }),
     });
-    setLinks(updated);
-    setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
-  }, []);
+    const orders = new Map(updated.map((link) => [link.id, link.order]));
+    // Reordering must not replace editable fields with a server snapshot.
+    setLinks((prev) => prev.map((link) => ({ ...link, order: orders.get(link.id) ?? link.order }))
+      .sort((a, b) => a.order - b.order));
+  }), [runLinkAction]);
 
-  const addMenuItem = useCallback(async () => {
+  const addMenuItem = useCallback(() => runLinkAction(async () => {
     const item = await api<MenuItem>("/api/menu", { method: "POST", body: JSON.stringify({}) });
     setMenu((prev) => [...prev, item]);
-    setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
-  }, []);
+  }), [runLinkAction]);
 
-  const updateMenuItem = useCallback(async (id: string, patch: Partial<MenuItem>) => {
-    setMenu((prev) => prev.map((m) => (m.id === id ? { ...m, ...patch } : m)));
-    const item = await api<MenuItem>(`/api/menu/${id}`, { method: "PATCH", body: JSON.stringify(patch) });
-    setMenu((prev) => prev.map((m) => (m.id === id ? item : m)));
-    setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
-  }, []);
+  const updateMenuItem = useCallback((id: string, patch: Partial<MenuItem>) => {
+    setMenu((prev) => prev.map((item) => item.id === id ? { ...item, ...patch } : item));
+    linkSaves.enqueue(`/api/menu/${id}`, patch);
+  }, [linkSaves]);
 
-  const deleteMenuItem = useCallback(async (id: string) => {
-    setMenu((prev) => prev.filter((m) => m.id !== id));
+  const deleteMenuItem = useCallback((id: string) => runLinkAction(async () => {
     await api(`/api/menu/${id}`, { method: "DELETE" });
-    setSaveLabel(`Saved ${new Date().toLocaleTimeString()}`);
-  }, []);
+    setMenu((prev) => prev.filter((item) => item.id !== id));
+  }), [runLinkAction]);
 
   const addDate = useCallback(async () => {
     const date = await api<TourDate>("/api/dates", { method: "POST", body: JSON.stringify({}) });
@@ -187,7 +222,10 @@ export function AdminShell({
       <header className="admin-topbar">
         <div className="admin-topbar-title">
           <h1 className="admin-title">Site admin</h1>
-          <span className="admin-save-label">{saveLabel}</span>
+          <span className="admin-save-label" role="status">{
+            linkSaveStatus.error || linkActionError ? "Link changes need attention"
+              : linkSaveStatus.pending || linkActionBusy ? "Saving links…" : saveLabel
+          }</span>
         </div>
         <div className="admin-topbar-actions">
           <span className="admin-username">{username}</span>
@@ -226,17 +264,25 @@ export function AdminShell({
           <ContentTab content={content} onPatch={patchContent} />
         ) : null}
         {tab === "links" ? (
-          <LinksTab
-            links={links}
-            menu={menu}
-            onAddLink={addLink}
-            onUpdateLink={updateLink}
-            onDeleteLink={deleteLink}
-            onMoveLink={moveLink}
-            onAddMenuItem={addMenuItem}
-            onUpdateMenuItem={updateMenuItem}
-            onDeleteMenuItem={deleteMenuItem}
-          />
+          <div className="admin-tab-content">
+            <fieldset className="album-editor-fields" disabled={linkActionBusy} onBlur={flushLinks}>
+              <LinksTab
+                links={links}
+                menu={menu}
+                onAddLink={addLink}
+                onUpdateLink={updateLink}
+                onDeleteLink={deleteLink}
+                onMoveLink={moveLink}
+                onAddMenuItem={addMenuItem}
+                onUpdateMenuItem={updateMenuItem}
+                onDeleteMenuItem={deleteMenuItem}
+              />
+            </fieldset>
+            {linkSaveStatus.error || linkActionError ? <div role="alert" className="admin-field-error">
+              {linkSaveStatus.error || linkActionError}
+              {linkSaveStatus.error ? <button type="button" className="admin-btn" onClick={() => { setLinkActionError(""); flushLinks(); }}>Retry saving</button> : null}
+            </div> : null}
+          </div>
         ) : null}
         {tab === "visual" ? <VisualTab content={content} onPatch={patchContent} /> : null}
         {tab === "tour" ? (
@@ -253,10 +299,10 @@ export function AdminShell({
       </main>
 
       <footer className="admin-footer">
-        <button type="button" className="admin-btn" onClick={exportJson}>
+        <button type="button" className="admin-btn" onClick={exportJson} disabled={linkSaveStatus.pending || linkActionBusy}>
           Export JSON
         </button>
-        <button type="button" className="admin-btn admin-btn-danger" onClick={resetAll} disabled={busy}>
+        <button type="button" className="admin-btn admin-btn-danger" onClick={resetAll} disabled={busy || linkSaveStatus.pending || linkActionBusy}>
           Reset content
         </button>
       </footer>

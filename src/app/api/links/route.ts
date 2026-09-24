@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const link = await prisma.link.create({
     data: {
       label: typeof body.label === "string" && body.label ? body.label : "New link",
-      url: typeof body.url === "string" && body.url ? body.url : "https://",
+      url: typeof body.url === "string" && body.url ? body.url : "",
       tag: typeof body.tag === "string" ? body.tag : "Link",
       order: (maxOrder._max.order ?? -1) + 1,
     },

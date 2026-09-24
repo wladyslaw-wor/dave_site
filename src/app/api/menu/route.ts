@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const item = await prisma.menuItem.create({
     data: {
       label: typeof body.label === "string" && body.label ? body.label : "New item",
-      url: typeof body.url === "string" && body.url ? body.url : "https://",
+      url: typeof body.url === "string" && body.url ? body.url : "",
       order: (maxOrder._max.order ?? -1) + 1,
     },
   });

@@ -39,7 +39,11 @@ export function LinksTab({
               className="admin-input"
               value={item.url}
               onChange={(e) => onUpdateMenuItem(item.id, { url: e.target.value })}
-              placeholder="URL"
+              placeholder="https://… or /blog"
+              aria-label="URL"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <button
               type="button"
@@ -75,7 +79,11 @@ export function LinksTab({
               className="admin-input"
               value={link.url}
               onChange={(e) => onUpdateLink(link.id, { url: e.target.value })}
-              placeholder="URL"
+              placeholder="https://… or /blog"
+              aria-label="URL"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <input
               className="admin-input"
