@@ -7,6 +7,14 @@ import { useScrolled } from "./ScrollProvider";
 import { TrackedLink } from "./TrackedLink";
 import type { MenuItem } from "@/types";
 
+function isExternalMenuLink(href: string) {
+  try {
+    return new URL(href, window.location.href).origin !== window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
 export function SiteHeader({ name, menu }: { name: string; menu: MenuItem[] }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const scrolled = useScrolled();
@@ -66,19 +74,23 @@ export function SiteHeader({ name, menu }: { name: string; menu: MenuItem[] }) {
 
       {menuOpen ? (
         <div className="burger-sheet" ref={sheetRef}>
-          {menu.map((item) => (
-            <TrackedLink
-              key={item.id}
-              trackId={item.id}
-              href={item.url}
-              target="_blank"
-              rel="noreferrer"
-              className="burger-item"
-              onClick={() => setMenuOpen(false)}
-            >
-              {item.label}
-            </TrackedLink>
-          ))}
+          {menu.map((item) => {
+            // The menu only opens after a client interaction, so the current origin is available.
+            const external = isExternalMenuLink(item.url);
+            return (
+              <TrackedLink
+                key={item.id}
+                trackId={item.id}
+                href={item.url}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+                className="burger-item"
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </TrackedLink>
+            );
+          })}
           <button type="button" className="burger-close" onClick={() => setMenuOpen(false)}>
             Close
           </button>
