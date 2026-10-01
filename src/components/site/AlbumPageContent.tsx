@@ -17,16 +17,16 @@ export async function AlbumPageContent() {
   return (
     <SiteChrome content={content} menu={menu}>
       <main className="album-page">
-        <header className="hero-block">
-          <p className="release-kicker">The Album · {content.name}</p>
-          <h1 className="hero-h1">{album.title || "The Album"}</h1>
-          <div className="hero-rule" />
-        </header>
-
         {album.coverUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img className="about-photo album-cover" src={album.coverUrl} alt={`${album.title || "The Album"} — cover art`} />
         ) : null}
+
+        <header className="hero-block">
+          <p className="release-kicker">The Album · {content.name}</p>
+          <h1 className="about-h2">{album.title || "The Album"}</h1>
+          <div className="hero-rule" />
+        </header>
 
         {platforms.length ? <section className="album-section" aria-labelledby="album-listen">
           <h2 className="album-section-title" id="album-listen">Listen to the album</h2>
